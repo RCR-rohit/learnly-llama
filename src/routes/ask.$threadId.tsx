@@ -97,8 +97,8 @@ function ChatView({ thread }: { thread: Thread }) {
 
   const isLoading = status === "submitted" || status === "streaming";
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  function handleSubmit(_message: unknown, event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     const text = input.trim();
     if (!text || isLoading) return;
     setInput("");

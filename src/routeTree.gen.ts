@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AskIndexRouteImport } from './routes/ask.index'
+import { Route as AskThreadIdRouteImport } from './routes/ask.$threadId'
+import { Route as TopicTopicIdRouteImport } from './routes/topic.$topicId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +25,64 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AskIndexRoute = AskIndexRouteImport.update({
+  id: '/ask/',
+  path: '/ask/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AskThreadIdRoute = AskThreadIdRouteImport.update({
+  id: '/ask/$threadId',
+  path: '/ask/$threadId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TopicTopicIdRoute = TopicTopicIdRouteImport.update({
+  id: '/topic/$topicId',
+  path: '/topic/$topicId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
+  '/ask/$threadId': typeof AskThreadIdRoute
+  '/topic/$topicId': typeof TopicTopicIdRoute
+  '/ask/': typeof AskIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
+  '/ask/$threadId': typeof AskThreadIdRoute
+  '/topic/$topicId': typeof TopicTopicIdRoute
+  '/ask': typeof AskIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
+  '/ask/$threadId': typeof AskThreadIdRoute
+  '/topic/$topicId': typeof TopicTopicIdRoute
+  '/ask/': typeof AskIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/chat'
+  fullPaths: '/' | '/api/chat' | '/ask/$threadId' | '/topic/$topicId' | '/ask/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/chat'
-  id: '__root__' | '/' | '/api/chat'
+  to: '/' | '/api/chat' | '/ask/$threadId' | '/topic/$topicId' | '/ask'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/chat'
+    | '/ask/$threadId'
+    | '/topic/$topicId'
+    | '/ask/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiChatRoute: typeof ApiChatRoute
+  AskThreadIdRoute: typeof AskThreadIdRoute
+  TopicTopicIdRoute: typeof TopicTopicIdRoute
+  AskIndexRoute: typeof AskIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +101,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ask/': {
+      id: '/ask/'
+      path: '/ask'
+      fullPath: '/ask/'
+      preLoaderRoute: typeof AskIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ask/$threadId': {
+      id: '/ask/$threadId'
+      path: '/ask/$threadId'
+      fullPath: '/ask/$threadId'
+      preLoaderRoute: typeof AskThreadIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/topic/$topicId': {
+      id: '/topic/$topicId'
+      path: '/topic/$topicId'
+      fullPath: '/topic/$topicId'
+      preLoaderRoute: typeof TopicTopicIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiChatRoute: ApiChatRoute,
+  AskThreadIdRoute: AskThreadIdRoute,
+  TopicTopicIdRoute: TopicTopicIdRoute,
+  AskIndexRoute: AskIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
