@@ -12,6 +12,8 @@ export const Route = createFileRoute("/ask/")({
       { name: "description", content: "Chat with an AI tutor about anything you are studying." },
       { property: "og:title", content: "Ask your tutor — Study Lab" },
       { property: "og:description", content: "Chat with an AI tutor about anything you are studying." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AskIndex,

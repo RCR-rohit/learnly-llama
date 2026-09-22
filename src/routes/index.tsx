@@ -25,6 +25,8 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Turn any subject into simple AI notes, quizzes and flashcards, and track what you know.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,

@@ -35,6 +35,8 @@ export const Route = createFileRoute("/ask/$threadId")({
       { name: "description", content: "Ask follow-up questions and get simple explanations." },
       { property: "og:title", content: "Tutor chat — Study Lab" },
       { property: "og:description", content: "Ask follow-up questions and get simple explanations." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ThreadPage,

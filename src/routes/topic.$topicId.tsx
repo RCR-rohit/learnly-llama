@@ -27,6 +27,8 @@ export const Route = createFileRoute("/topic/$topicId")({
       { name: "description", content: "Your AI notes, practice quiz and flashcards for this topic." },
       { property: "og:title", content: "Topic — Study Lab" },
       { property: "og:description", content: "AI notes, practice quiz and flashcards for this topic." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: TopicPage,
