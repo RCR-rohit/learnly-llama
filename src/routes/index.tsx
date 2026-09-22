@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Sparkle, Trash2 } from "lucide-react";
+import { ArrowRight, BrainCircuit, FileText, Layers3, Loader2, Sparkle, Trash2 } from "lucide-react";
 
 import { StudyShell } from "@/components/StudyShell";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,8 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Turn any subject into simple AI notes, quizzes and flashcards, and track what you know.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
@@ -61,51 +63,68 @@ function Index() {
 
   return (
     <StudyShell>
-      <section className="text-center">
-        <h1 className="text-balance text-4xl leading-tight sm:text-5xl">
-          Learn anything, one simple page at a time
+      <section className="mx-auto max-w-3xl text-center">
+        <p className="section-label">AI-powered study workspace</p>
+        <h1 className="mt-4 text-balance text-4xl leading-tight sm:text-6xl">
+          Turn any subject into <span className="text-primary">clear understanding.</span>
         </h1>
-        <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+        <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-muted-foreground">
           Type a subject. Get easy notes, a practice quiz, flashcards and a tutor who answers your
           questions — and watch your progress grow.
         </p>
       </section>
 
-      <form onSubmit={handleCreate} className="paper mt-8 space-y-3 p-5">
+      <form onSubmit={handleCreate} className="cyber-panel mx-auto mt-9 max-w-3xl space-y-3 p-3 sm:p-4">
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="What do you want to study? e.g. Photosynthesis, SQL joins, World War I causes"
-          className="h-12 text-base"
+          className="h-13 border-0 bg-secondary/50 px-4 text-base shadow-none focus-visible:ring-1"
           disabled={busy}
         />
         <Textarea
           value={material}
           onChange={(e) => setMaterial(e.target.value)}
           placeholder="Optional: paste your textbook text, lecture notes or a syllabus to base the notes on."
-          rows={3}
+          rows={4}
+          className="border-0 bg-secondary/30 px-4 py-3 shadow-none focus-visible:ring-1"
           disabled={busy}
         />
-        <div className="flex justify-end">
+        <div className="flex items-center justify-between border-t border-border px-1 pt-3">
+          <span className="hidden text-xs text-muted-foreground sm:block">Notes first. Quiz and cards next.</span>
           <Button type="submit" disabled={busy || !title.trim()} className="gap-2">
             {busy ? <Loader2 className="size-4 animate-spin" /> : <Sparkle className="size-4" />}
             {busy ? "Writing your notes…" : "Generate notes"}
+            {!busy && <ArrowRight className="size-4" />}
           </Button>
         </div>
       </form>
 
-      <section className="mt-10">
-        <h2 className="text-2xl">Your topics</h2>
+      <div className="mx-auto mt-5 grid max-w-3xl grid-cols-3 gap-2">
+        {[
+          { icon: FileText, label: "Simple notes" },
+          { icon: BrainCircuit, label: "Smart quizzes" },
+          { icon: Layers3, label: "Flashcards" },
+        ].map(({ icon: Icon, label }) => (
+          <div key={label} className="flex items-center justify-center gap-2 rounded-md border border-border bg-secondary/20 px-2 py-3 text-xs text-muted-foreground">
+            <Icon className="size-4 text-primary" /> {label}
+          </div>
+        ))}
+      </div>
+
+      <section className="mt-14">
+        <p className="section-label">Library</p>
+        <h2 className="mt-2 text-2xl">Your topics</h2>
         {topics.length === 0 ? (
           <p className="mt-2 text-sm text-muted-foreground">
             Nothing here yet — your first topic will appear once you generate notes.
           </p>
         ) : (
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {topics.map((topic) => {
               const p = topicProgress(topic);
               return (
-                <li key={topic.id} className="paper group relative p-4">
+                <li key={topic.id} className="paper group relative p-5 transition hover:-translate-y-1 hover:border-primary/45 hover:shadow-[var(--shadow-glow)]">
                   <Link
                     to="/topic/$topicId"
                     params={{ topicId: topic.id }}
