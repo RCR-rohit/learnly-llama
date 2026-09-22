@@ -112,8 +112,8 @@ function ChatView({ thread }: { thread: Thread }) {
 
   return (
     <StudyShell>
-      <div className="grid gap-6 md:grid-cols-[220px_1fr]">
-        <aside className="hidden md:block">
+      <div className="grid gap-6 md:grid-cols-[240px_1fr]">
+        <aside className="hidden border-r border-border pr-5 md:block">
           <Button onClick={startNew} className="w-full gap-2">
             <Plus className="size-4" /> New chat
           </Button>
@@ -148,9 +148,10 @@ function ChatView({ thread }: { thread: Thread }) {
           </ul>
         </aside>
 
-        <section className="paper flex h-[70vh] flex-col overflow-hidden">
-          <header className="border-b border-border px-4 py-3">
-            <h1 className="truncate text-lg">{thread.title}</h1>
+        <section className="paper flex h-[72vh] flex-col overflow-hidden">
+          <header className="border-b border-border bg-secondary/20 px-5 py-4">
+            <p className="section-label">Live study session</p>
+            <h1 className="mt-1 truncate text-lg">{thread.title}</h1>
             {topic && (
               <p className="text-xs text-muted-foreground">Using your notes on {topic.title}</p>
             )}
@@ -179,7 +180,7 @@ function ChatView({ thread }: { thread: Thread }) {
             <ConversationScrollButton />
           </Conversation>
 
-          <div className="border-t border-border p-3">
+          <div className="border-t border-border bg-secondary/15 p-3">
             <PromptInput onSubmit={handleSubmit}>
               <PromptInputTextarea
                 ref={textareaRef}

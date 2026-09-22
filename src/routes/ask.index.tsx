@@ -28,9 +28,10 @@ function AskIndex() {
 
   return (
     <StudyShell>
-      <div className="flex items-end justify-between gap-3">
+      <div className="flex items-end justify-between gap-4 border-b border-border pb-6">
         <div>
-          <h1 className="text-3xl">Ask your tutor</h1>
+          <p className="section-label">AI tutor</p>
+          <h1 className="mt-2 text-3xl sm:text-4xl">Ask your tutor</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             One chat per question or topic, saved in this browser.
           </p>
@@ -41,8 +42,10 @@ function AskIndex() {
       </div>
 
       {threads.length === 0 ? (
-        <div className="paper mt-8 p-10 text-center">
-          <MessagesSquare className="mx-auto size-8 text-muted-foreground" />
+        <div className="paper mt-8 p-12 text-center">
+          <span className="mx-auto flex size-12 items-center justify-center rounded-md border border-primary/30 bg-primary/10 text-primary shadow-[var(--shadow-glow)]">
+            <MessagesSquare className="size-6" />
+          </span>
           <p className="mt-3 text-sm text-muted-foreground">
             No chats yet. Start one and ask anything you're stuck on.
           </p>
@@ -52,7 +55,7 @@ function AskIndex() {
           {threads.map((thread) => {
             const topic = topics.find((t) => t.id === thread.topicId);
             return (
-              <li key={thread.id} className="paper flex items-center gap-2 p-3">
+              <li key={thread.id} className="paper flex items-center gap-2 p-4 transition hover:border-primary/45">
                 <Link
                   to="/ask/$threadId"
                   params={{ threadId: thread.id }}

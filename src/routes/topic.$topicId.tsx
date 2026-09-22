@@ -95,30 +95,30 @@ function TopicView({ topic }: { topic: Topic }) {
 
   return (
     <StudyShell>
-      <div className="flex flex-wrap items-end justify-between gap-3">
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
         <div>
-          <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">
+          <Link to="/" className="section-label hover:text-foreground">
             ← All topics
           </Link>
-          <h1 className="mt-1 text-3xl">{topic.title}</h1>
+          <h1 className="mt-3 text-3xl sm:text-4xl">{topic.title}</h1>
         </div>
         <Button variant="outline" onClick={askAboutTopic} className="gap-2">
           <MessagesSquare className="size-4" /> Ask about this
         </Button>
       </div>
 
-      <div className="paper mt-5 flex flex-wrap items-center gap-6 p-4">
+      <div className="paper mt-6 grid grid-cols-2 gap-5 p-5 sm:grid-cols-[repeat(4,auto)_1fr] sm:items-center sm:gap-7">
         <Stat label="Mastery" value={`${p.mastery}%`} />
         <Stat label="Cards known" value={`${p.known}/${p.cards}`} />
         <Stat label="Best quiz" value={p.best ? `${p.best}%` : "—"} />
         <Stat label="Quizzes taken" value={`${topic.attempts.length}`} />
-        <div className="min-w-40 flex-1">
+        <div className="col-span-2 min-w-40 sm:col-span-1 sm:flex-1">
           <Progress value={p.mastery} className="h-2" />
         </div>
       </div>
 
       <Tabs defaultValue="notes" className="mt-6">
-        <TabsList>
+        <TabsList className="h-auto w-full justify-start overflow-x-auto border border-border bg-secondary/30 p-1 sm:w-auto">
           <TabsTrigger value="notes">Notes</TabsTrigger>
           <TabsTrigger value="quiz">Quiz</TabsTrigger>
           <TabsTrigger value="cards">Flashcards</TabsTrigger>
@@ -126,7 +126,7 @@ function TopicView({ topic }: { topic: Topic }) {
         </TabsList>
 
         <TabsContent value="notes" className="mt-4">
-          <div className="paper p-6">
+          <div className="paper p-6 sm:p-8">
             {topic.notes ? (
               <div className="notes-prose">
                 <ReactMarkdown>{topic.notes}</ReactMarkdown>
