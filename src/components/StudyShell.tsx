@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { BookOpen, MessagesSquare, GraduationCap } from "lucide-react";
 import type { ReactNode } from "react";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
+
 export function StudyShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background/70">
@@ -28,6 +30,7 @@ export function StudyShell({ children }: { children: ReactNode }) {
               <MessagesSquare className="size-4" /> Ask
             </Link>
           </nav>
+          <ThemeToggle />
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">{children}</main>
