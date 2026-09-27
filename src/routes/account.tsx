@@ -49,7 +49,7 @@ function AccountPage() {
     setBusy(true);
     const { error } = await supabase.from("profiles").upsert({ id: user!.id, display_name: name.trim() || null, updated_at: new Date().toISOString() });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await refreshProfile();
     toast.success("Profile saved.");
   }
@@ -57,7 +57,7 @@ function AccountPage() {
   async function upload(file: File) {
     const path = `${user!.id}/avatar-${Date.now()}.${file.name.split(".").pop() ?? "png"}`;
     const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await supabase.from("profiles").upsert({ id: user!.id, avatar_path: path, updated_at: new Date().toISOString() });
     await refreshProfile();
     toast.success("Photo updated.");
