@@ -3,6 +3,7 @@ import { BookOpen, MessagesSquare, GraduationCap } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { UserMenu } from "@/components/UserMenu";
 
 export function StudyShell({ children }: { children: ReactNode }) {
   return (
@@ -31,6 +32,7 @@ export function StudyShell({ children }: { children: ReactNode }) {
             </Link>
           </nav>
           <ThemeToggle />
+          <UserMenu />
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">{children}</main>

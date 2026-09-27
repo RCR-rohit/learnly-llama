@@ -96,6 +96,18 @@ export function useStudyState(): StudyState {
   return useSyncExternalStore(subscribe, ensureLoaded, () => empty);
 }
 
+/* ---------- account sync helpers ---------- */
+
+export type { StudyState };
+export const getStudyState = () => ensureLoaded();
+export const subscribeStudy = subscribe;
+export function replaceStudyState(next: Partial<StudyState>) {
+  setState({
+    topics: Array.isArray(next.topics) ? next.topics : [],
+    threads: Array.isArray(next.threads) ? next.threads : [],
+  });
+}
+
 export function newId() {
   return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
 }
