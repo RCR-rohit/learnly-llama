@@ -11,6 +11,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Log in — Study Lab" },
@@ -27,6 +30,7 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,8 +38,11 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (user) navigate({ to: "/", replace: true });
-  }, [user, navigate]);
+    if (user) {
+      if (next) window.location.href = next;
+      else navigate({ to: "/", replace: true });
+    }
+  }, [user, navigate, next]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,7 +56,7 @@ function AuthPage() {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin, data: { display_name: name.trim() || undefined } },
+          options: { emailRedirectTo: window.location.origin + (next ?? ""), data: { display_name: name.trim() || undefined } },
         });
         if (error) throw error;
         if (!data.session) toast.success("Check your email to confirm your account.");
