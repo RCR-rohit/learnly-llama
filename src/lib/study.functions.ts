@@ -1,34 +1,17 @@
-import { createOpenAI } from "@ai-sdk/openai";
 import { createServerFn } from "@tanstack/react-start";
 import { NoObjectGeneratedError, Output, streamText } from "ai";
 import { z } from "zod";
 
-import { createLovableAiGatewayRunIdFetch } from "./ai-gateway.server";
+import { resolveAiProvider } from "./ai-provider.server";
 
-const MODEL = "openai/gpt-6-astra";
-
-function getModel() {
-  const key = process.env["LOVABLE_API_KEY"];
-  if (!key) throw new Error("Missing LOVABLE_API_KEY");
-  const runIdFetch = createLovableAiGatewayRunIdFetch();
-  const lovable = createOpenAI({
-    baseURL: "https://ai.gateway.lovable.dev/v1",
-    apiKey: key,
-    headers: { "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-    fetch: runIdFetch.fetch,
-  });
-  return lovable.responses(MODEL);
+function getAi() {
+  const ai = resolveAiProvider();
+  return {
+    model: ai.model,
+    ...(ai.providerOptions ? { providerOptions: ai.providerOptions } : {}),
+  };
 }
 
-const reasoningOptions = {
-  openai: {
-    forceReasoning: true,
-    reasoningEffort: "low",
-    reasoningSummary: "auto",
-    store: false,
-    include: ["reasoning.encrypted_content"],
-  },
-} as const;
 
 const TopicInput = z.object({
   topic: z.string().min(1),
@@ -39,8 +22,7 @@ export const generateNotes = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => TopicInput.parse(input))
   .handler(async ({ data }) => {
     const result = streamText({
-      model: getModel(),
-      providerOptions: reasoningOptions,
+      ...getAi(),
       system:
         "You write simple, beginner-friendly study notes. Use plain language, short sentences and everyday examples. Structure with markdown headings, bullet points, bold key terms, and finish with a '## Quick recap' list of the 5 most important takeaways. Keep it under roughly 700 words.",
       prompt: `Write study notes on: ${data.topic}${
@@ -70,8 +52,7 @@ export const generateMcqs = createServerFn({ method: "POST" })
     const count = Math.min(Math.max(Math.round(data.count) || 5, 3), 15);
     try {
       const result = streamText({
-        model: getModel(),
-        providerOptions: reasoningOptions,
+      ...getAi(),
         output: Output.object({ schema: McqSchema }),
         system:
           "You write fair multiple-choice questions for learners. Exactly 4 options per question, only one clearly correct. correctIndex is the 0-based index of the right option. Keep the explanation to one or two simple sentences.",
@@ -109,8 +90,7 @@ export const generateFlashcards = createServerFn({ method: "POST" })
     const count = Math.min(Math.max(Math.round(data.count) || 10, 4), 25);
     try {
       const result = streamText({
-        model: getModel(),
-        providerOptions: reasoningOptions,
+      ...getAi(),
         output: Output.object({ schema: FlashcardSchema }),
         system:
           "You make revision flashcards. The front is a short prompt, term or question (max ~12 words). The back is a simple, memorable answer (max ~35 words). No numbering.",
