@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "sdk_version": "3.0.4",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://pcfmgubocgcgruchqyaj.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "study-buddy-ai",
+      "version": "0.1.0",
+      "title": "Study Buddy AI"
+    },
+    "tools": [
+      {
+        "name": "list_topics",
+        "title": "List study topics",
+        "description": "List the signed-in learner's study topics with their progress.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_topic_notes",
+        "title": "Get topic notes",
+        "description": "Get the study notes (markdown) for one of the learner's topics.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "topicId": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Topic id from list_topics."
+            }
+          },
+          "required": [
+            "topicId"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_topic_flashcards",
+        "title": "Get flashcards and quiz",
+        "description": "Get the flashcards and multiple-choice questions for one of the learner's topics.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "topicId": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Topic id from list_topics."
+            }
+          },
+          "required": [
+            "topicId"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
