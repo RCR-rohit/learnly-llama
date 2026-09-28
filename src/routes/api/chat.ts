@@ -1,13 +1,12 @@
-import { createOpenAI } from "@ai-sdk/openai";
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 
 import {
-  createLovableAiGatewayRunIdFetch,
   getLovableAiGatewayResponseHeaders,
   getLovableAiGatewayRunId,
   withLovableAiGatewayRunIdHeader,
 } from "@/lib/ai-gateway.server";
+import { resolveAiProvider } from "@/lib/ai-provider.server";
 
 type ChatRequestBody = { messages?: unknown; context?: unknown };
 
@@ -20,19 +19,16 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Messages are required", { status: 400 });
         }
 
-        const key = process.env["LOVABLE_API_KEY"];
-        if (!key) {
-          return new Response("Missing LOVABLE_API_KEY", { status: 500 });
-        }
-
         const initialRunId = getLovableAiGatewayRunId(request);
-        const runIdFetch = createLovableAiGatewayRunIdFetch(initialRunId);
-        const lovable = createOpenAI({
-          baseURL: "https://ai.gateway.lovable.dev/v1",
-          apiKey: key,
-          headers: { "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-          fetch: runIdFetch.fetch,
-        });
+        let ai: ReturnType<typeof resolveAiProvider>;
+        try {
+          ai = resolveAiProvider(initialRunId);
+        } catch (error) {
+          return new Response(error instanceof Error ? error.message : "AI is not configured", {
+            status: 500,
+          });
+        }
+        const runIdFetch = ai.runIdFetch;
 
         const studyContext =
           typeof context === "string" && context.trim().length > 0
@@ -40,22 +36,15 @@ export const Route = createFileRoute("/api/chat")({
             : "";
 
         const result = streamText({
-          model: lovable.responses("openai/gpt-6-astra"),
+          model: ai.model,
           system:
             "You are a patient study tutor. Explain in plain, simple language with short paragraphs, concrete examples and analogies. Use markdown: bold key terms, short bullet lists, and a one-line 'In short:' summary at the end. Never invent facts; say when you are unsure." +
             studyContext,
           messages: await convertToModelMessages(messages as UIMessage[]),
           abortSignal: request.signal,
-          providerOptions: {
-            openai: {
-              forceReasoning: true,
-              reasoningEffort: "low",
-              reasoningSummary: "auto",
-              store: false,
-              include: ["reasoning.encrypted_content"],
-            },
-          },
+          ...(ai.providerOptions ? { providerOptions: ai.providerOptions } : {}),
         });
+
 
         return withLovableAiGatewayRunIdHeader(
           result.toUIMessageStreamResponse({
