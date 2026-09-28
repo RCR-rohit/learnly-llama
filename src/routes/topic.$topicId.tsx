@@ -2,7 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { Check, Loader2, MessagesSquare, RotateCcw, Sparkle, X } from "lucide-react";
+import { Check, Download, Loader2, MessagesSquare, RotateCcw, Sparkle, X } from "lucide-react";
+import { downloadNotesPdf } from "@/lib/notes-pdf";
 
 import { StudyShell } from "@/components/StudyShell";
 import { Button } from "@/components/ui/button";
@@ -136,11 +137,23 @@ function TopicView({ topic }: { topic: Topic }) {
             ) : (
               <Empty text="No notes yet." />
             )}
-            <div className="mt-6">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Button variant="outline" onClick={() => run("notes")} disabled={busy !== null} className="gap-2">
                 {busy === "notes" ? <Loader2 className="size-4 animate-spin" /> : <RotateCcw className="size-4" />}
                 {topic.notes ? "Rewrite notes" : "Generate notes"}
               </Button>
+              {topic.notes && (
+                <Button
+                  onClick={() =>
+                    downloadNotesPdf(topic.title, topic.notes!).catch(() =>
+                      toast.error("Couldn't create the PDF. Please try again."),
+                    )
+                  }
+                  className="gap-2"
+                >
+                  <Download className="size-4" /> Download PDF
+                </Button>
+              )}
             </div>
           </div>
         </TabsContent>
