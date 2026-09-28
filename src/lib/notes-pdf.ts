@@ -33,8 +33,10 @@ export async function downloadNotesPdf(title: string, markdown: string) {
     }
     const h = line.match(/^(#{1,6})\s+(.*)/);
     const li = line.match(/^\s*(?:[-*+]|\d+\.)\s+(.*)/);
-    if (h) write(clean(h[2]), h[1].length <= 1 ? 18 : h[1].length === 2 ? 15 : 13, "bold", 4);
-    else if (li) write("•  " + clean(li[1]), 11, "normal", 2, 10);
+    if (h) {
+      const level = (h[1] ?? "").length;
+      write(clean(h[2] ?? ""), level <= 1 ? 18 : level === 2 ? 15 : 13, "bold", 4);
+    } else if (li) write("•  " + clean(li[1] ?? ""), 11, "normal", 2, 10);
     else write(clean(line), 11, "normal", 4);
   }
 
