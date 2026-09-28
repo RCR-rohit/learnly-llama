@@ -1,34 +1,17 @@
-import { createOpenAI } from "@ai-sdk/openai";
 import { createServerFn } from "@tanstack/react-start";
 import { NoObjectGeneratedError, Output, streamText } from "ai";
 import { z } from "zod";
 
-import { createLovableAiGatewayRunIdFetch } from "./ai-gateway.server";
+import { resolveAiProvider } from "./ai-provider.server";
 
-const MODEL = "openai/gpt-6-astra";
-
-function getModel() {
-  const key = process.env["LOVABLE_API_KEY"];
-  if (!key) throw new Error("Missing LOVABLE_API_KEY");
-  const runIdFetch = createLovableAiGatewayRunIdFetch();
-  const lovable = createOpenAI({
-    baseURL: "https://ai.gateway.lovable.dev/v1",
-    apiKey: key,
-    headers: { "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-    fetch: runIdFetch.fetch,
-  });
-  return lovable.responses(MODEL);
+function getAi() {
+  const ai = resolveAiProvider();
+  return {
+    model: ai.model,
+    ...(ai.providerOptions ? { providerOptions: ai.providerOptions } : {}),
+  };
 }
 
-const reasoningOptions = {
-  openai: {
-    forceReasoning: true,
-    reasoningEffort: "low",
-    reasoningSummary: "auto",
-    store: false,
-    include: ["reasoning.encrypted_content"],
-  },
-} as const;
 
 const TopicInput = z.object({
   topic: z.string().min(1),
