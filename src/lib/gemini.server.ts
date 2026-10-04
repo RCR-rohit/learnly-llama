@@ -16,7 +16,7 @@ export function getGemini() {
 export function parseModelJson(text: string): unknown {
   let t = text.trim();
   const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  if (fence) t = fence[1].trim();
+  if (fence?.[1]) t = fence[1].trim();
   try {
     return JSON.parse(t);
   } catch {
