@@ -3,6 +3,7 @@ import { BookOpen, MessagesSquare, GraduationCap } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { TopBarSearch } from "@/components/TopBarSearch";
 import { UserMenu } from "@/components/UserMenu";
 
 export function StudyShell({ children }: { children: ReactNode }) {
