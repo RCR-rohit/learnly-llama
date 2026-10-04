@@ -1,14 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage } from "ai";
 
-import {
-  getLovableAiGatewayResponseHeaders,
-  getLovableAiGatewayRunId,
-  withLovableAiGatewayRunIdHeader,
-} from "@/lib/ai-gateway.server";
-import { resolveAiProvider } from "@/lib/ai-provider.server";
+import { friendlyGeminiError, getGemini } from "@/lib/gemini.server";
 
 type ChatRequestBody = { messages?: unknown; context?: unknown };
+
+function toGeminiContents(messages: UIMessage[]) {
+  return messages
+    .filter((m) => m.role === "user" || m.role === "assistant")
+    .map((m) => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [
+        {
+          text: m.parts
+            .map((p) => (p.type === "text" ? p.text : ""))
+            .join("")
+            .trim() || " ",
+        },
+      ],
+    }));
+}
 
 export const Route = createFileRoute("/api/chat")({
   server: {
@@ -19,43 +30,46 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Messages are required", { status: 400 });
         }
 
-        const initialRunId = getLovableAiGatewayRunId(request);
-        let ai: ReturnType<typeof resolveAiProvider>;
+        let gemini: ReturnType<typeof getGemini>;
         try {
-          ai = resolveAiProvider(initialRunId);
+          gemini = getGemini();
         } catch (error) {
-          return new Response(error instanceof Error ? error.message : "AI is not configured", {
-            status: 500,
-          });
+          return new Response(friendlyGeminiError(error).message, { status: 500 });
         }
-        const runIdFetch = ai.runIdFetch;
 
         const studyContext =
           typeof context === "string" && context.trim().length > 0
             ? `\n\nThe learner is currently studying these notes. Ground your answers in them when relevant:\n\n${context.slice(0, 12000)}`
             : "";
 
-        const result = streamText({
-          model: ai.model,
-          system:
-            "You are a patient study tutor. Explain in plain, simple language with short paragraphs, concrete examples and analogies. Use markdown: bold key terms, short bullet lists, and a one-line 'In short:' summary at the end. Never invent facts; say when you are unsure." +
-            studyContext,
-          messages: await convertToModelMessages(messages as UIMessage[]),
-          abortSignal: request.signal,
-          ...(ai.providerOptions ? { providerOptions: ai.providerOptions } : {}),
+        const stream = createUIMessageStream({
+          originalMessages: messages as UIMessage[],
+          execute: async ({ writer }) => {
+            const id = crypto.randomUUID();
+            const response = await gemini.ai.models.generateContentStream({
+              model: gemini.model,
+              contents: toGeminiContents(messages as UIMessage[]),
+              config: {
+                abortSignal: request.signal,
+                systemInstruction:
+                  "You are a patient study tutor. Explain in plain, simple language with short paragraphs, concrete examples and analogies. Use markdown: bold key terms, short bullet lists, and a one-line 'In short:' summary at the end. Never invent facts; say when you are unsure." +
+                  studyContext,
+              },
+            });
+            writer.write({ type: "text-start", id });
+            for await (const chunk of response) {
+              const delta = chunk.text;
+              if (delta) writer.write({ type: "text-delta", id, delta });
+            }
+            writer.write({ type: "text-end", id });
+          },
+          onError: (error) => {
+            console.error(error);
+            return friendlyGeminiError(error).message;
+          },
         });
 
-
-        return withLovableAiGatewayRunIdHeader(
-          result.toUIMessageStreamResponse({
-            originalMessages: messages as UIMessage[],
-            sendReasoning: true,
-            headers: getLovableAiGatewayResponseHeaders(undefined, {
-              ...(initialRunId ? { "X-Lovable-AIG-Run-ID": initialRunId } : {}),
-            }),
-          }),
-          runIdFetch,
-        );
+        return createUIMessageStreamResponse({ stream });
       },
     },
   },
