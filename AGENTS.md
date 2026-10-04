@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+- All AI calls go through the server-only Gemini client in src/lib/gemini.server.ts (@google/genai, GEMINI_API_KEY, optional GEMINI_MODEL); why: one provider that works the same on Lovable and external hosts.
