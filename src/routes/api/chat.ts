@@ -30,11 +30,10 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Messages are required", { status: 400 });
         }
 
-        let gemini: ReturnType<typeof getGemini>;
-        try {
-          gemini = getGemini();
-        } catch (error) {
-          return new Response(friendlyGeminiError(error).message, { status: 500 });
+        if (!process.env["GEMINI_API_KEY"]) {
+          return new Response(friendlyGeminiError(new Error("Missing GEMINI_API_KEY")).message, {
+            status: 500,
+          });
         }
 
         const studyContext =
@@ -46,20 +45,28 @@ export const Route = createFileRoute("/api/chat")({
           originalMessages: messages as UIMessage[],
           execute: async ({ writer }) => {
             const id = crypto.randomUUID();
-            const response = await gemini.ai.models.generateContentStream({
-              model: gemini.model,
-              contents: toGeminiContents(messages as UIMessage[]),
-              config: {
-                abortSignal: request.signal,
-                systemInstruction:
-                  "You are a patient study tutor. Explain in plain, simple language with short paragraphs, concrete examples and analogies. Use markdown: bold key terms, short bullet lists, and a one-line 'In short:' summary at the end. Never invent facts; say when you are unsure." +
-                  studyContext,
-              },
-            });
+            // Retry/fallback covers opening the stream and its first chunk,
+            // before anything is sent to the browser.
+            const { iterator, first } = await withGemini(async (ai, model) => {
+              const response = await ai.models.generateContentStream({
+                model,
+                contents: toGeminiContents(messages as UIMessage[]),
+                config: {
+                  abortSignal: request.signal,
+                  systemInstruction:
+                    "You are a patient study tutor. Explain in plain, simple language with short paragraphs, concrete examples and analogies. Use markdown: bold key terms, short bullet lists, and a one-line 'In short:' summary at the end. Never invent facts; say when you are unsure." +
+                    studyContext,
+                },
+              });
+              const it = response[Symbol.asyncIterator]();
+              return { iterator: it, first: await it.next() };
+            }, request.signal);
             writer.write({ type: "text-start", id });
-            for await (const chunk of response) {
-              const delta = chunk.text;
+            let next = first;
+            while (!next.done) {
+              const delta = next.value.text;
               if (delta) writer.write({ type: "text-delta", id, delta });
+              next = await iterator.next();
             }
             writer.write({ type: "text-end", id });
           },
