@@ -45,7 +45,7 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
   component: Consent,
   errorComponent: ({ error }) => (
     <StudyShell>
-      <div className="paper p-8 text-center">Could not load this request: {String(error?.message ?? error)}</div>
+      <div className="paper p-8 text-center">Could not load this request: {String((error as Error | undefined)?.message ?? error)}</div>
     </StudyShell>
   ),
 });
