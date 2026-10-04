@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage } from "ai";
 
-import { friendlyGeminiError, getGemini } from "@/lib/gemini.server";
+import { friendlyGeminiError, withGemini } from "@/lib/gemini.server";
 
 type ChatRequestBody = { messages?: unknown; context?: unknown };
 
