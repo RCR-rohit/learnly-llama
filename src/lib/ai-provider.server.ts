@@ -1,4 +1,5 @@
 import { createOpenAI } from "@ai-sdk/openai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 import { createLovableAiGatewayRunIdFetch } from "./ai-gateway.server";
 
@@ -42,6 +43,18 @@ export function resolveAiProvider(initialRunId?: string) {
     };
   }
 
+  const geminiKey = process.env["GEMINI_API_KEY"] ?? process.env["GOOGLE_GENERATIVE_AI_API_KEY"];
+  if (geminiKey) {
+    const runIdFetch = createLovableAiGatewayRunIdFetch(initialRunId);
+    const google = createGoogleGenerativeAI({ apiKey: geminiKey });
+    return {
+      model: google(process.env["GEMINI_MODEL"] ?? "gemini-2.5-flash"),
+      runIdFetch,
+      isLovable: false as const,
+      providerOptions: undefined,
+    };
+  }
+
   if (openaiKey) {
     const runIdFetch = createLovableAiGatewayRunIdFetch(initialRunId);
     const provider = createOpenAI({
@@ -57,6 +70,6 @@ export function resolveAiProvider(initialRunId?: string) {
   }
 
   throw new Error(
-    "No AI key configured. Set LOVABLE_API_KEY (on Lovable) or OPENAI_API_KEY (on an external host).",
+    "No AI key configured. Set LOVABLE_API_KEY (on Lovable) or GEMINI_API_KEY (on an external host).",
   );
 }
