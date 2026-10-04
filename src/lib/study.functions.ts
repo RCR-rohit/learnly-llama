@@ -1,18 +1,19 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-import { friendlyGeminiError, getGemini, parseModelJson } from "./gemini.server";
+import { friendlyGeminiError, isTemporaryError, parseModelJson, withGemini } from "./gemini.server";
 
 async function generateText(system: string, prompt: string, json = false) {
-  const { ai, model } = getGemini();
-  const res = await ai.models.generateContent({
-    model,
-    contents: prompt,
-    config: {
-      systemInstruction: system,
-      ...(json ? { responseMimeType: "application/json" } : {}),
-    },
-  });
+  const res = await withGemini((ai, model) =>
+    ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        systemInstruction: system,
+        ...(json ? { responseMimeType: "application/json" } : {}),
+      },
+    }),
+  );
   const text = res.text ?? "";
   if (!text.trim()) throw new Error("Empty AI response");
   return text;
@@ -20,13 +21,14 @@ async function generateText(system: string, prompt: string, json = false) {
 
 async function generateJson<T>(schema: z.ZodType<T>, system: string, prompt: string): Promise<T> {
   let lastError: unknown;
+  // One extra attempt only for malformed JSON; availability retries live in withGemini.
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const text = await generateText(system, prompt, true);
       return schema.parse(parseModelJson(text));
     } catch (error) {
       lastError = error;
-      if (error instanceof Error && /GEMINI_API_KEY|429|401|403/.test(error.message)) break;
+      if (isTemporaryError(error) || (error instanceof Error && /GEMINI_API_KEY|401|403/.test(error.message))) break;
     }
   }
   throw lastError;
