@@ -17,7 +17,8 @@ export function StudyShell({ children }: { children: ReactNode }) {
             </span>
             <span className="font-display text-lg font-bold">Study Lab</span>
           </Link>
-          <nav className="ml-auto flex items-center gap-1 rounded-md border border-border bg-secondary/30 p-1 text-sm">
+          <TopBarSearch />
+          <nav className="ml-auto flex shrink-0 items-center gap-1 rounded-md border border-border bg-secondary/30 p-1 text-sm">
             <Link
               to="/"
               className="flex items-center gap-1.5 rounded px-3 py-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground [&.active]:bg-primary/15 [&.active]:text-primary"
