@@ -75,7 +75,7 @@ function ChatView({ thread }: { thread: Thread }) {
     () =>
       new DefaultChatTransport({
         api: "/api/chat",
-        body: { context: topic?.notes ?? null },
+        body: { context: topic ? [topic.notes, topic.sourceText].filter(Boolean).join("\n\n---\nSource PDF key content:\n") || null : null },
       }),
     [topic?.notes],
   );
