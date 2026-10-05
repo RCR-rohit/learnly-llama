@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { ArrowRight, BrainCircuit, FileText, Layers3, Loader2, Sparkle, Trash2 } from "lucide-react";
 
 import { StudyShell } from "@/components/StudyShell";
+import { PdfStudyKit } from "@/components/PdfStudyKit";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -111,6 +112,8 @@ function Index() {
           </div>
         ))}
       </div>
+
+      <PdfStudyKit />
 
       <section className="mt-14">
         <p className="section-label">Library</p>
