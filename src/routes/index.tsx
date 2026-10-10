@@ -101,17 +101,41 @@ function Index() {
         </div>
       </form>
 
-      <div className="mx-auto mt-5 grid max-w-3xl grid-cols-3 gap-2">
+      <div className="mx-auto mt-5 grid max-w-3xl gap-2 sm:grid-cols-3">
         {[
-          { icon: FileText, label: "Simple notes" },
-          { icon: BrainCircuit, label: "Smart quizzes" },
-          { icon: Layers3, label: "Flashcards" },
-        ].map(({ icon: Icon, label }) => (
-          <div key={label} className="flex items-center justify-center gap-2 rounded-md border border-border bg-secondary/20 px-2 py-3 text-xs text-muted-foreground">
-            <Icon className="size-4 text-primary" /> {label}
+          { icon: FileText, label: "Simple notes", desc: "Any subject, explained in plain words" },
+          { icon: BrainCircuit, label: "Smart quizzes", desc: "Multiple-choice questions that check you" },
+          { icon: Layers3, label: "Flashcards", desc: "Flip, learn, and mark what you know" },
+        ].map(({ icon: Icon, label, desc }) => (
+          <div
+            key={label}
+            className="paper group p-4 text-left transition hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-[var(--shadow-glow)]"
+          >
+            <span className="flex size-8 items-center justify-center rounded-md border border-primary/40 bg-primary/15 text-primary transition-transform group-hover:scale-105">
+              <Icon className="size-4" />
+            </span>
+            <p className="mt-2.5 text-sm font-semibold">{label}</p>
+            <p className="mt-0.5 text-xs leading-5 text-muted-foreground">{desc}</p>
           </div>
         ))}
       </div>
+
+      <section className="mx-auto mt-12 max-w-3xl text-center">
+        <p className="section-label">How it works</p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-4">
+          {[
+            "Type a subject or upload a PDF",
+            "AI writes easy notes",
+            "Practice with quiz & cards",
+            "Track what you know",
+          ].map((step, i) => (
+            <div key={step} className="rounded-md border border-border bg-secondary/20 px-3 py-4">
+              <span className="step-dot">{i + 1}</span>
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">{step}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <PdfStudyKit />
 
@@ -154,6 +178,12 @@ function Index() {
           </ul>
         )}
       </section>
+
+      <footer className="mt-16 border-t border-border pt-6 text-center">
+        <p className="font-mono text-xs tracking-wide text-muted-foreground">
+          Study Lab — notes · quizzes · flashcards · tutor
+        </p>
+      </footer>
     </StudyShell>
   );
 }

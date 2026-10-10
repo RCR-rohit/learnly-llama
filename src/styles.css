@@ -181,6 +181,21 @@
   letter-spacing: 0.12em;
 }
 
+@utility step-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: calc(infinity * 1px);
+  border: 1px solid color-mix(in oklab, var(--color-primary) 45%, transparent);
+  background: color-mix(in oklab, var(--color-primary) 12%, transparent);
+  color: var(--color-primary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 @utility grid-fade {
   mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
 }

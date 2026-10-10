@@ -34,8 +34,11 @@ function AskIndex() {
         <div>
           <p className="section-label">AI tutor</p>
           <h1 className="mt-2 text-3xl sm:text-4xl">Ask your tutor</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             One chat per question or topic, saved in this browser.
+            <span className="rounded-full border border-border bg-secondary/40 px-2 py-0.5 font-mono text-[0.68rem] text-primary">
+              {threads.length} {threads.length === 1 ? "chat" : "chats"}
+            </span>
           </p>
         </div>
         <Button onClick={start} className="gap-2">
@@ -61,13 +64,18 @@ function AskIndex() {
                 <Link
                   to="/ask/$threadId"
                   params={{ threadId: thread.id }}
-                  className="min-w-0 flex-1"
+                  className="flex min-w-0 flex-1 items-center gap-3"
                 >
-                  <p className="truncate font-medium">{thread.title}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {topic ? `${topic.title} · ` : ""}
-                    {new Date(thread.updatedAt).toLocaleString()}
-                  </p>
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border bg-secondary/40 text-primary">
+                    <MessagesSquare className="size-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <p className="truncate font-medium">{thread.title}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {topic ? `${topic.title} · ` : ""}
+                      {new Date(thread.updatedAt).toLocaleString()}
+                    </p>
+                  </span>
                 </Link>
                 <button
                   type="button"
