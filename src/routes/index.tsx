@@ -64,10 +64,14 @@ function Index() {
 
   return (
     <StudyShell>
-      <section className="mx-auto max-w-3xl text-center">
-        <p className="section-label">AI-powered study workspace</p>
-        <h1 className="mt-4 text-balance text-4xl leading-tight sm:text-6xl">
-          Turn any subject into <span className="text-primary">clear understanding.</span>
+      <section className="relative mx-auto max-w-3xl text-center">
+        <div className="aurora" aria-hidden="true">
+          <span className="-left-24 -top-16 size-72 bg-primary" />
+          <span className="-right-24 top-10 size-80 bg-accent" />
+        </div>
+        <p className="chip"><Sparkle className="size-3" /> AI-powered study workspace</p>
+        <h1 className="mt-5 text-balance text-4xl leading-tight sm:text-6xl">
+          Turn any subject into <span className="text-gradient">clear understanding.</span>
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-muted-foreground">
           Type a subject. Get easy notes, a practice quiz, flashcards and a tutor who answers your
@@ -75,7 +79,7 @@ function Index() {
         </p>
       </section>
 
-      <form onSubmit={handleCreate} className="cyber-panel mx-auto mt-9 max-w-3xl space-y-3 p-3 sm:p-4">
+      <form onSubmit={handleCreate} className="cyber-panel glow-border mx-auto mt-9 max-w-3xl space-y-3 p-3 sm:p-4">
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -93,7 +97,7 @@ function Index() {
         />
         <div className="flex items-center justify-between border-t border-border px-1 pt-3">
           <span className="hidden text-xs text-muted-foreground sm:block">Notes first. Quiz and cards next.</span>
-          <Button type="submit" disabled={busy || !title.trim()} className="gap-2">
+          <Button type="submit" disabled={busy || !title.trim()} className="shimmer gap-2 text-primary-foreground">
             {busy ? <Loader2 className="size-4 animate-spin" /> : <Sparkle className="size-4" />}
             {busy ? "Writing your notes…" : "Generate notes"}
             {!busy && <ArrowRight className="size-4" />}
@@ -101,7 +105,7 @@ function Index() {
         </div>
       </form>
 
-      <div className="mx-auto mt-5 grid max-w-3xl gap-2 sm:grid-cols-3">
+      <div className="stagger mx-auto mt-5 grid max-w-3xl gap-2 sm:grid-cols-3">
         {[
           { icon: FileText, label: "Simple notes", desc: "Any subject, explained in plain words" },
           { icon: BrainCircuit, label: "Smart quizzes", desc: "Multiple-choice questions that check you" },
@@ -109,9 +113,9 @@ function Index() {
         ].map(({ icon: Icon, label, desc }) => (
           <div
             key={label}
-            className="paper group p-4 text-left transition hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-[var(--shadow-glow)]"
+            className="paper lift group p-4 text-left"
           >
-            <span className="flex size-8 items-center justify-center rounded-md border border-primary/40 bg-primary/15 text-primary transition-transform group-hover:scale-105">
+            <span className="float flex size-9 items-center justify-center rounded-lg border border-primary/40 bg-gradient-to-br from-primary/25 to-accent/20 text-primary transition-transform group-hover:scale-110">
               <Icon className="size-4" />
             </span>
             <p className="mt-2.5 text-sm font-semibold">{label}</p>
@@ -122,14 +126,14 @@ function Index() {
 
       <section className="mx-auto mt-12 max-w-3xl text-center">
         <p className="section-label">How it works</p>
-        <div className="mt-4 grid gap-2 sm:grid-cols-4">
+        <div className="stagger mt-4 grid gap-2 sm:grid-cols-4">
           {[
             "Type a subject or upload a PDF",
             "AI writes easy notes",
             "Practice with quiz & cards",
             "Track what you know",
           ].map((step, i) => (
-            <div key={step} className="rounded-md border border-border bg-secondary/20 px-3 py-4">
+            <div key={step} className="lift rounded-lg border border-border bg-secondary/20 px-3 py-4">
               <span className="step-dot">{i + 1}</span>
               <p className="mt-2 text-xs leading-5 text-muted-foreground">{step}</p>
             </div>
@@ -151,7 +155,7 @@ function Index() {
             {topics.map((topic) => {
               const p = topicProgress(topic);
               return (
-                <li key={topic.id} className="paper group relative p-5 transition hover:-translate-y-1 hover:border-primary/45 hover:shadow-[var(--shadow-glow)]">
+                <li key={topic.id} className="paper lift group relative p-5">
                   <Link
                     to="/topic/$topicId"
                     params={{ topicId: topic.id }}
