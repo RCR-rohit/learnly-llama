@@ -260,6 +260,7 @@
 }
 
 html {
+  overflow-x: clip;
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in oklab, var(--color-primary) 45%, transparent) transparent;
@@ -299,13 +300,12 @@ html {
   position: absolute;
   inset: 0;
   z-index: -1;
-  overflow: hidden;
   pointer-events: none;
   & > span {
     position: absolute;
     border-radius: 9999px;
-    filter: blur(70px);
-    opacity: 0.38;
+    filter: blur(90px);
+    opacity: 0.22;
   }
 }
 
