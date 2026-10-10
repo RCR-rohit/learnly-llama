@@ -139,23 +139,6 @@ function Index() {
 
       <PdfStudyKit />
 
-      <section className="mx-auto mt-12 max-w-3xl text-center">
-        <p className="section-label">How it works</p>
-        <div className="mt-4 grid gap-2 sm:grid-cols-4">
-          {[
-            "Type a subject or upload a PDF",
-            "AI writes easy notes",
-            "Practice with quiz & cards",
-            "Track what you know",
-          ].map((step, i) => (
-            <div key={step} className="rounded-md border border-border bg-secondary/20 px-3 py-4">
-              <span className="step-dot">{i + 1}</span>
-              <p className="mt-2 text-xs leading-5 text-muted-foreground">{step}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <section className="mt-14">
         <p className="section-label">Library</p>
         <h2 className="mt-2 text-2xl">Your topics</h2>
@@ -195,6 +178,12 @@ function Index() {
           </ul>
         )}
       </section>
+
+      <footer className="mt-16 border-t border-border pt-6 text-center">
+        <p className="font-mono text-xs tracking-wide text-muted-foreground">
+          Study Lab — notes · quizzes · flashcards · tutor
+        </p>
+      </footer>
     </StudyShell>
   );
 }
