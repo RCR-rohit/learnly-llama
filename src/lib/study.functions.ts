@@ -44,8 +44,15 @@ export const generateNotes = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     try {
       const notes = await generateText(
-        "You write simple, beginner-friendly study notes. Use plain language, short sentences and everyday examples. Structure with markdown headings, bullet points, bold key terms, and finish with a '## Quick recap' list of the 5 most important takeaways. Keep it under roughly 700 words.",
-        `Write study notes on: ${data.topic}${
+        "You are a master academic tutor and exam coach. Write a comprehensive, active-learning study guide — never dry definitions or plain bullet lists. Use plain, beginner-friendly language and markdown headings, bullets and bold key terms. Structure the guide exactly as follows: " +
+          "1. '## Core definitions & intuition' — the definition in exact academic terminology, then a plain-English breakdown as if explaining to a 12-year-old, then a real-world analogy or everyday example. " +
+          "2. '## Key concepts & breakdown' — core principles, rules, formulas or components; clearly mark what matters most for exams versus practical understanding. " +
+          "3. '## Conceptual Q&A (short-form)' — 5 'Why?' or 'How?' questions that test deep understanding rather than memorisation, each followed by a clear answer of 2-4 sentences. " +
+          "4. '## Common confusions & pitfalls' — include at least one 'What is the difference between X and Y?' comparison and 'What is the most common mistake students make with this concept?', each with an answer that corrects the misconception. " +
+          "5. '## Exam-style questions & model answers (long-form)' — 2 scenario-based or analytical questions, each with a step-by-step model answer that demonstrates full-credit exam structure. " +
+          "6. '## Quick viva / flash quiz' — 5 rapid-fire questions with one-sentence answers for fast recall before exams. " +
+          "Keep the whole guide roughly 900-1400 words.",
+        `Write the study guide on: ${data.topic}${
           data.detail ? `\n\nExtra context or source material from the learner:\n${data.detail.slice(0, 12000)}` : ""
         }`,
       );
