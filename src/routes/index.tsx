@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { ArrowRight, BrainCircuit, FileText, Layers3, Loader2, Sparkle, Trash2 } from "lucide-react";
 
 import { StudyShell } from "@/components/StudyShell";
-import { PdfStudyKit } from "@/components/PdfStudyKit";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -128,7 +127,7 @@ function Index() {
         <p className="section-label">How it works</p>
         <div className="stagger mt-4 grid gap-2 sm:grid-cols-4">
           {[
-            "Type a subject or upload a PDF",
+            "Type a subject to study",
             "AI writes easy notes",
             "Practice with quiz & cards",
             "Track what you know",
@@ -141,7 +140,6 @@ function Index() {
         </div>
       </section>
 
-      <PdfStudyKit />
 
       <section className="mt-14">
         <p className="section-label">Library</p>
