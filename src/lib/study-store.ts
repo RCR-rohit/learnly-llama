@@ -1,5 +1,4 @@
 import { useSyncExternalStore } from "react";
-import type { UIMessage } from "ai";
 
 export type Mcq = {
   question: string;
@@ -31,21 +30,12 @@ export type Topic = {
   attempts: QuizAttempt[];
 };
 
-export type Thread = {
-  id: string;
-  title: string;
-  topicId: string | null;
-  messages: UIMessage[];
-  updatedAt: number;
-};
-
 type StudyState = {
   topics: Topic[];
-  threads: Thread[];
 };
 
 const STORAGE_KEY = "study-lab:v1";
-const empty: StudyState = { topics: [], threads: [] };
+const empty: StudyState = { topics: [] };
 
 let state: StudyState = empty;
 let loaded = false;

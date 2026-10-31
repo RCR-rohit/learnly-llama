@@ -15,9 +15,6 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as AskIndexRouteImport } from './routes/ask.index'
-import { Route as AskThreadIdRouteImport } from './routes/ask.$threadId'
 import { Route as TopicTopicIdRouteImport } from './routes/topic.$topicId'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
@@ -52,21 +49,6 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AskIndexRoute = AskIndexRouteImport.update({
-  id: '/ask/',
-  path: '/ask/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AskThreadIdRoute = AskThreadIdRouteImport.update({
-  id: '/ask/$threadId',
-  path: '/ask/$threadId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TopicTopicIdRoute = TopicTopicIdRouteImport.update({
   id: '/topic/$topicId',
   path: '/topic/$topicId',
@@ -85,10 +67,7 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/reset-password': typeof ResetPasswordRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/api/chat': typeof ApiChatRoute
-  '/ask/$threadId': typeof AskThreadIdRoute
   '/topic/$topicId': typeof TopicTopicIdRoute
-  '/ask/': typeof AskIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesByTo {
@@ -98,10 +77,7 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/reset-password': typeof ResetPasswordRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/api/chat': typeof ApiChatRoute
-  '/ask/$threadId': typeof AskThreadIdRoute
   '/topic/$topicId': typeof TopicTopicIdRoute
-  '/ask': typeof AskIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesById {
@@ -112,10 +88,7 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/reset-password': typeof ResetPasswordRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/api/chat': typeof ApiChatRoute
-  '/ask/$threadId': typeof AskThreadIdRoute
   '/topic/$topicId': typeof TopicTopicIdRoute
-  '/ask/': typeof AskIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRouteTypes {
@@ -127,10 +100,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/reset-password'
     | '/.well-known/oauth-protected-resource'
-    | '/api/chat'
-    | '/ask/$threadId'
     | '/topic/$topicId'
-    | '/ask/'
     | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -140,10 +110,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/reset-password'
     | '/.well-known/oauth-protected-resource'
-    | '/api/chat'
-    | '/ask/$threadId'
     | '/topic/$topicId'
-    | '/ask'
     | '/.lovable/oauth/consent'
   id:
     | '__root__'
@@ -153,10 +120,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/reset-password'
     | '/.well-known/oauth-protected-resource'
-    | '/api/chat'
-    | '/ask/$threadId'
     | '/topic/$topicId'
-    | '/ask/'
     | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
 }
@@ -167,10 +131,7 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  ApiChatRoute: typeof ApiChatRoute
-  AskThreadIdRoute: typeof AskThreadIdRoute
   TopicTopicIdRoute: typeof TopicTopicIdRoute
-  AskIndexRoute: typeof AskIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -218,27 +179,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ask/': {
-      id: '/ask/'
-      path: '/ask'
-      fullPath: '/ask/'
-      preLoaderRoute: typeof AskIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ask/$threadId': {
-      id: '/ask/$threadId'
-      path: '/ask/$threadId'
-      fullPath: '/ask/$threadId'
-      preLoaderRoute: typeof AskThreadIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/topic/$topicId': {
       id: '/topic/$topicId'
       path: '/topic/$topicId'
@@ -264,10 +204,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
-  ApiChatRoute: ApiChatRoute,
-  AskThreadIdRoute: AskThreadIdRoute,
   TopicTopicIdRoute: TopicTopicIdRoute,
-  AskIndexRoute: AskIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
