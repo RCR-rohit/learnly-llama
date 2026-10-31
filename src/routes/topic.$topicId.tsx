@@ -123,10 +123,8 @@ function TopicView({ topic }: { topic: Topic }) {
       <Tabs defaultValue="notes" className="mt-6">
         <TabsList className="h-auto w-full justify-start overflow-x-auto border border-border bg-secondary/30 p-1 sm:w-auto">
           <TabsTrigger value="notes">Notes</TabsTrigger>
-          {topic.summary && <TabsTrigger value="summary">Summary</TabsTrigger>}
           <TabsTrigger value="quiz">Quiz</TabsTrigger>
           <TabsTrigger value="cards">Flashcards</TabsTrigger>
-          {topic.viva && topic.viva.length > 0 && <TabsTrigger value="viva">Viva</TabsTrigger>}
           <TabsTrigger value="progress">Progress</TabsTrigger>
         </TabsList>
 
