@@ -158,31 +158,6 @@ function TopicView({ topic }: { topic: Topic }) {
           </div>
         </TabsContent>
 
-        {topic.summary && (
-          <TabsContent value="summary" className="mt-4">
-            <div className="paper p-6 sm:p-8">
-              {topic.sourceName && <p className="section-label mb-3">From {topic.sourceName}</p>}
-              <div className="notes-prose">
-                <ReactMarkdown>{topic.summary}</ReactMarkdown>
-              </div>
-            </div>
-          </TabsContent>
-        )}
-
-        {topic.viva && topic.viva.length > 0 && (
-          <TabsContent value="viva" className="mt-4">
-            <div className="paper space-y-3 p-6">
-              <p className="text-sm text-muted-foreground">Try answering out loud, then open each to check.</p>
-              {topic.viva.map((v, i) => (
-                <details key={i} className="rounded-md border border-border bg-secondary/30 p-4">
-                  <summary className="cursor-pointer font-medium">{i + 1}. {v.question}</summary>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{v.answer}</p>
-                </details>
-              ))}
-            </div>
-          </TabsContent>
-        )}
-
         <TabsContent value="quiz" className="mt-4">
           {topic.mcqs.length === 0 ? (
             <div className="paper p-6">
