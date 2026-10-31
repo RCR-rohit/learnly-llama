@@ -127,7 +127,7 @@ function Index() {
         <p className="section-label">How it works</p>
         <div className="stagger mt-4 grid gap-2 sm:grid-cols-4">
           {[
-            "Type a subject or upload a PDF",
+            "Type a subject to study",
             "AI writes easy notes",
             "Practice with quiz & cards",
             "Track what you know",
