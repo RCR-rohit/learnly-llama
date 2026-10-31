@@ -29,11 +29,6 @@ export type Topic = {
   mcqs: Mcq[];
   flashcards: Flashcard[];
   attempts: QuizAttempt[];
-  /** Optional extras from the PDF study kit. */
-  summary?: string | null;
-  viva?: { question: string; answer: string }[];
-  sourceText?: string | null;
-  sourceName?: string | null;
 };
 
 export type Thread = {
