@@ -98,9 +98,6 @@ function TopicView({ topic }: { topic: Topic }) {
           </Link>
           <h1 className="mt-3 text-3xl sm:text-4xl">{topic.title}</h1>
         </div>
-        <Button variant="outline" onClick={askAboutTopic} className="gap-2">
-          <MessagesSquare className="size-4" /> Ask about this
-        </Button>
       </div>
 
       <div className="paper mt-6 grid grid-cols-2 gap-5 p-5 sm:grid-cols-[repeat(4,auto)_1fr] sm:items-center sm:gap-7">
