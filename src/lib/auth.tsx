@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-/** Keeps topics & chats saved to the signed-in account. */
+/** Keeps topics saved to the signed-in account. */
 function useStudySync(userId: string | null) {
   const syncing = useRef(false);
 

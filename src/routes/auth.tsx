@@ -17,7 +17,7 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Log in — Study Lab" },
-      { name: "description", content: "Log in or create a Study Lab account to save your topics and chats." },
+      { name: "description", content: "Log in or create a Study Lab account to save your topics." },
       { property: "og:title", content: "Log in — Study Lab" },
       { property: "og:description", content: "Save your notes, quizzes and flashcards to your account." },
       { property: "og:type", content: "website" },
@@ -83,7 +83,7 @@ function AuthPage() {
         <p className="section-label text-center">Your account</p>
         <h1 className="mt-3 text-center text-4xl">{mode === "login" ? "Welcome back" : "Create account"}</h1>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Save topics, quizzes and chats so they follow you on any device.
+          Save topics, quizzes and flashcards so they follow you on any device.
         </p>
 
         <div className="cyber-panel mt-8 p-6">
