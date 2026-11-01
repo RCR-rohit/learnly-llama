@@ -59,7 +59,6 @@ function TopicPage() {
 }
 
 function TopicView({ topic }: { topic: Topic }) {
-  const navigate = useNavigate();
   const p = topicProgress(topic);
   const [busy, setBusy] = useState<string | null>(null);
 
