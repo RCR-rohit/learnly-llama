@@ -155,53 +155,6 @@ export function toggleCardKnown(topicId: string, cardId: string, known: boolean)
   });
 }
 
-/* ---------- threads ---------- */
-
-export function createThread(title: string, topicId: string | null = null): Thread {
-  const thread: Thread = {
-    id: newId(),
-    title: title.trim() || "New question",
-    topicId,
-    messages: [],
-    updatedAt: Date.now(),
-  };
-  const current = ensureLoaded();
-  setState({ ...current, threads: [thread, ...current.threads] });
-  return thread;
-}
-
-export function saveThreadMessages(id: string, messages: UIMessage[]) {
-  const current = ensureLoaded();
-  const thread = current.threads.find((t) => t.id === id);
-  if (!thread) return;
-  const firstUser = messages.find((m) => m.role === "user");
-  const derivedTitle = firstUser
-    ? firstUser.parts
-        .map((p) => (p.type === "text" ? p.text : ""))
-        .join(" ")
-        .trim()
-        .slice(0, 60)
-    : "";
-  setState({
-    ...current,
-    threads: current.threads.map((t) =>
-      t.id === id
-        ? {
-            ...t,
-            messages,
-            updatedAt: Date.now(),
-            title: t.title === "New question" && derivedTitle ? derivedTitle : t.title,
-          }
-        : t,
-    ),
-  });
-}
-
-export function deleteThread(id: string) {
-  const current = ensureLoaded();
-  setState({ ...current, threads: current.threads.filter((t) => t.id !== id) });
-}
-
 /* ---------- progress ---------- */
 
 export function topicProgress(topic: Topic) {
