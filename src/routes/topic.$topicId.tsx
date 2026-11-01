@@ -89,11 +89,6 @@ function TopicView({ topic }: { topic: Topic }) {
     }
   }
 
-  function askAboutTopic() {
-    const thread = createThread("New question", topic.id);
-    navigate({ to: "/ask/$threadId", params: { threadId: thread.id } });
-  }
-
   return (
     <StudyShell>
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
