@@ -11,7 +11,6 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateFlashcards, generateMcqs, generateNotes } from "@/lib/study.functions";
 import {
-  createThread,
   newId,
   recordAttempt,
   toggleCardKnown,
