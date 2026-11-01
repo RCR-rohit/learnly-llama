@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-/** Keeps topics & chats saved to the signed-in account. */
+/** Keeps topics saved to the signed-in account. */
 function useStudySync(userId: string | null) {
   const syncing = useRef(false);
 
@@ -103,13 +103,11 @@ function useStudySync(userId: string | null) {
       if (cancelled) return;
       const remote = (data?.data ?? null) as Partial<StudyState> | null;
       const local = getStudyState();
-      if (remote && (remote.topics?.length || remote.threads?.length)) {
+      if (remote && remote.topics?.length) {
         // merge: remote wins, keep local-only items
         const topicIds = new Set((remote.topics ?? []).map((t) => t.id));
-        const threadIds = new Set((remote.threads ?? []).map((t) => t.id));
         replaceStudyState({
           topics: [...(remote.topics ?? []), ...local.topics.filter((t) => !topicIds.has(t.id))],
-          threads: [...(remote.threads ?? []), ...local.threads.filter((t) => !threadIds.has(t.id))],
         });
       }
       await push();

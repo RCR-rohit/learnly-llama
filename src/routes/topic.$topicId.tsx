@@ -1,8 +1,8 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { Check, Download, Loader2, MessagesSquare, RotateCcw, Sparkle, X } from "lucide-react";
+import { Check, Download, Loader2, RotateCcw, Sparkle, X } from "lucide-react";
 import { downloadNotesPdf } from "@/lib/notes-pdf";
 
 import { StudyShell } from "@/components/StudyShell";
@@ -11,7 +11,6 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateFlashcards, generateMcqs, generateNotes } from "@/lib/study.functions";
 import {
-  createThread,
   newId,
   recordAttempt,
   toggleCardKnown,
@@ -60,7 +59,6 @@ function TopicPage() {
 }
 
 function TopicView({ topic }: { topic: Topic }) {
-  const navigate = useNavigate();
   const p = topicProgress(topic);
   const [busy, setBusy] = useState<string | null>(null);
 
@@ -91,11 +89,6 @@ function TopicView({ topic }: { topic: Topic }) {
     }
   }
 
-  function askAboutTopic() {
-    const thread = createThread("New question", topic.id);
-    navigate({ to: "/ask/$threadId", params: { threadId: thread.id } });
-  }
-
   return (
     <StudyShell>
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
@@ -105,9 +98,6 @@ function TopicView({ topic }: { topic: Topic }) {
           </Link>
           <h1 className="mt-3 text-3xl sm:text-4xl">{topic.title}</h1>
         </div>
-        <Button variant="outline" onClick={askAboutTopic} className="gap-2">
-          <MessagesSquare className="size-4" /> Ask about this
-        </Button>
       </div>
 
       <div className="paper mt-6 grid grid-cols-2 gap-5 p-5 sm:grid-cols-[repeat(4,auto)_1fr] sm:items-center sm:gap-7">

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BookOpen, MessagesSquare, GraduationCap } from "lucide-react";
+import { BookOpen, GraduationCap } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -25,12 +25,6 @@ export function StudyShell({ children }: { children: ReactNode }) {
               activeOptions={{ exact: true }}
             >
               <BookOpen className="size-4" /> Topics
-            </Link>
-            <Link
-              to="/ask"
-              className="flex items-center gap-1.5 rounded px-3 py-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground [&.active]:bg-primary/15 [&.active]:text-primary"
-            >
-              <MessagesSquare className="size-4" /> Ask
             </Link>
           </nav>
           <ThemeToggle />
