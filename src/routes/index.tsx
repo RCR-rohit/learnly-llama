@@ -73,8 +73,8 @@ function Index() {
           Turn any subject into <span className="text-gradient">clear understanding.</span>
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-muted-foreground">
-          Type a subject. Get easy notes, a practice quiz, flashcards and a tutor who answers your
-          questions — and watch your progress grow.
+          Type a subject. Get easy notes, a practice quiz and flashcards — and watch your
+          progress grow.
         </p>
       </section>
 
@@ -183,7 +183,7 @@ function Index() {
 
       <footer className="mt-16 border-t border-border pt-6 text-center">
         <p className="font-mono text-xs tracking-wide text-muted-foreground">
-          Study Lab — notes · quizzes · flashcards · tutor
+          Study Lab — notes · quizzes · flashcards
         </p>
       </footer>
     </StudyShell>
