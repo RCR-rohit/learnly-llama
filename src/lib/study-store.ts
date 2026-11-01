@@ -49,7 +49,6 @@ function load(): StudyState {
     const parsed = JSON.parse(raw) as Partial<StudyState>;
     return {
       topics: Array.isArray(parsed.topics) ? parsed.topics : [],
-      threads: Array.isArray(parsed.threads) ? parsed.threads : [],
     };
   } catch {
     return empty;
