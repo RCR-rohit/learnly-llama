@@ -1,8 +1,8 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { Check, Download, Loader2, MessagesSquare, RotateCcw, Sparkle, X } from "lucide-react";
+import { Check, Download, Loader2, RotateCcw, Sparkle, X } from "lucide-react";
 import { downloadNotesPdf } from "@/lib/notes-pdf";
 
 import { StudyShell } from "@/components/StudyShell";
