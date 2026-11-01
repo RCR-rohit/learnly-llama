@@ -93,7 +93,6 @@ export const subscribeStudy = subscribe;
 export function replaceStudyState(next: Partial<StudyState>) {
   setState({
     topics: Array.isArray(next.topics) ? next.topics : [],
-    threads: Array.isArray(next.threads) ? next.threads : [],
   });
 }
 
@@ -131,7 +130,6 @@ export function deleteTopic(id: string) {
   setState({
     ...current,
     topics: current.topics.filter((t) => t.id !== id),
-    threads: current.threads.map((t) => (t.topicId === id ? { ...t, topicId: null } : t)),
   });
 }
 
