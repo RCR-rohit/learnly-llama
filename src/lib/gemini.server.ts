@@ -1,11 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
 
 /** Primary model plus lower-demand fallbacks (all confirmed listed for this API key). */
-export const PRIMARY_MODEL = "gemini-3.8-flash";
-export const FALLBACK_MODELS = ["gemini-3.7-flash", "gemini-3.5-flash"];
+export const PRIMARY_MODEL = "gemini-3.5-flash";
+export const FALLBACK_MODELS = ["gemini-3.5-flash-lite", "gemini-3.7-flash"];
 
 const RETRYABLE_STATUS = new Set([429, 500, 502, 503, 504]);
-const MAX_RETRIES = 3; // after the first attempt: ~1s, ~2s, ~4s
+const MAX_RETRIES = 1; // one quick retry, then move to the next model
 
 export const BUSY_MESSAGE = "AI service is temporarily busy. Please try again in a few moments.";
 
